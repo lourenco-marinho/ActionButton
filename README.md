@@ -40,6 +40,11 @@ actionButton = ActionButton(attachedToView: view, items: [share, email])
 actionButton.action = { button in button.toggleMenu() }
 ```
 
+
+Enjoy
+--
+![Action Button](Action Button Sample.gif)
+
 ## Give it a try
 You can try Action Button with CocoaPods
 ```
