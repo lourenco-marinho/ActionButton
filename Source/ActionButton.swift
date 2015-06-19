@@ -24,25 +24,25 @@
 
 import UIKit
 
-typealias ActionButtonAction = (ActionButton) -> Void
+public typealias ActionButtonAction = (ActionButton) -> Void
 
 public class ActionButton: NSObject {
     
-    /// Indicates if the buttons is active (showing its items)
-    var active: Bool = false
-    
     /// The action the button should perform when tapped
-    var action: ActionButtonAction?
-    
-    /// An array of items that the button will present
-    var items: [ActionButtonItem]?
-    
+    public var action: ActionButtonAction?
+
     /// The button's background color
-    var backgroundColor: UIColor? {
+    public var backgroundColor: UIColor? {
         willSet {
             floatButton.backgroundColor = newValue
         }
     }
+    
+    /// Indicates if the buttons is active (showing its items)
+    private(set) public var active: Bool = false
+    
+    /// An array of items that the button will present
+    internal var items: [ActionButtonItem]?
     
     /// The button that will be presented to the user
     private var floatButton: UIButton!
@@ -103,7 +103,7 @@ public class ActionButton: NSObject {
     
     //MARK: - Auto Layout Methods
     /**
-    Install all the necessary constraints for the button. By the default the button will be placed at 15pts from the bottom and the 15pts from the right of its *parentView*
+        Install all the necessary constraints for the button. By the default the button will be placed at 15pts from the bottom and the 15pts from the right of its *parentView*
     */
     private func installConstraints() {
         let views = ["floatButton":self.floatButton, "parentView":self.parentView]
@@ -140,16 +140,16 @@ public class ActionButton: NSObject {
     
     //MARK: - Custom Methods
     /**
-    Presents or hides all the ActionButton's actions
+        Presents or hides all the ActionButton's actions
     */
-    func toggleMenu() {
+    public func toggleMenu() {
         self.placeButtonItems()
         self.toggle()
     }
     
     //MARK: - Action Button Items Placement
     /**
-    Defines the position of all the ActionButton's actions
+        Defines the position of all the ActionButton's actions
     */
     private func placeButtonItems() {
         if let optionalItems = self.items {
@@ -164,7 +164,7 @@ public class ActionButton: NSObject {
     
     //MARK - Float Menu Methods
     /**
-    Presents or hides all the ActionButton's actions and changes the *active* state
+        Presents or hides all the ActionButton's actions and changes the *active* state
     */
     private func toggle() {
         self.animateMenu()
@@ -216,9 +216,9 @@ public class ActionButton: NSObject {
     }
     
     /**
-    Animates the button pressing, by the default this method just scales the button down when it's pressed and returns to its normal size when the button is no longer pressed
+        Animates the button pressing, by the default this method just scales the button down when it's pressed and returns to its normal size when the button is no longer pressed
     
-    :param: scale how much the button should be scaled
+        :param: scale how much the button should be scaled
     */
     private func animatePressingWithScale(scale: CGFloat) {
         UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: nil, animations: {
