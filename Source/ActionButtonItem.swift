@@ -24,18 +24,15 @@
 
 import UIKit
 
-typealias ActionButtonItemAction = (ActionButtonItem) -> Void
+public typealias ActionButtonItemAction = (ActionButtonItem) -> Void
 
 public class ActionButtonItem: NSObject {
     
     /// The action the item should perform when tapped
-    var action: ActionButtonItemAction?
-    
-    /// View that will hold the item's button and label
-    var view: UIView!
+    public var action: ActionButtonItemAction?
     
     /// Description of the item's action
-    var text: String {
+    public var text: String {
         get {
             return self.label.text!
         }
@@ -44,6 +41,9 @@ public class ActionButtonItem: NSObject {
             self.label.text = newValue
         }
     }
+    /// View that will hold the item's button and label
+    internal var view: UIView!
+    
     /// Label that contain the item's *text*
     private var label: UILabel!
     
@@ -63,8 +63,8 @@ public class ActionButtonItem: NSObject {
     private let backgroundInset = CGSize(width: 10, height: 10)
     
     /**
-    :param: title Title that will be presented when the item is active
-    :param: image Item's image used by the it's button
+        :param: title Title that will be presented when the item is active
+        :param: image Item's image used by the it's button
     */
     public init(title optionalTitle: String?, image: UIImage?) {
         super.init()
