@@ -21,6 +21,9 @@ Then, run the following command
 ```
 $ pod install
 ```
+Requirements
+--
+- iOS 8.0+
 
 Usage
 --

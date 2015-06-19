@@ -28,8 +28,13 @@ typealias ActionButtonItemAction = (ActionButtonItem) -> Void
 
 public class ActionButtonItem: NSObject {
     
+    /// The action the item should perform when tapped
     var action: ActionButtonItemAction?
+    
+    /// View that will hold the item's button and label
     var view: UIView!
+    
+    /// Description of the item's action
     var text: String {
         get {
             return self.label.text!
@@ -39,15 +44,28 @@ public class ActionButtonItem: NSObject {
             self.label.text = newValue
         }
     }
-    
+    /// Label that contain the item's *text*
     private var label: UILabel!
+    
+    /// Main button that will perform the defined action
     private var button: UIButton!
+    
+    /// Image used by the button
     private var image: UIImage!
-    private var labelBackground: UIView!
+    
+    /// Size needed for the *view* property presente the item's content
     private let viewSize = CGSize(width: 200, height: 35)
+    
+    /// Button's size by default the button is 35x35
     private let buttonSize = CGSize(width: 35, height: 35)
+    
+    private var labelBackground: UIView!
     private let backgroundInset = CGSize(width: 10, height: 10)
     
+    /**
+    :param: title Title that will be presented when the item is active
+    :param: image Item's image used by the it's button
+    */
     public init(title optionalTitle: String?, image: UIImage?) {
         super.init()
         
@@ -107,15 +125,14 @@ public class ActionButtonItem: NSObject {
         self.view.addSubview(self.button)
     }
         
-    // MARK: - Button Action Methods
-    
+    //MARK: - Button Action Methods
     func buttonPressed(sender: UIButton) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
     }
     
-    // MARK: - Gesture Recognizer Methods
+    //MARK: - Gesture Recognizer Methods
     func labelTapped(gesture: UIGestureRecognizer) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)

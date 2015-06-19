@@ -13,8 +13,8 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		A90AD8EA1B13CA4700DE2695 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A90AD8E91B13CA4700DE2695 /* LaunchScreen.xib */; };
-		A9E513A91B13CE0200604F6B /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E513A71B13CE0200604F6B /* ActionButton.swift */; };
-		A9E513AA1B13CE0200604F6B /* ActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E513A81B13CE0200604F6B /* ActionButtonItem.swift */; };
+		A91F90CB1B34BD5800412A45 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F90C91B34BD5800412A45 /* ActionButton.swift */; };
+		A91F90CC1B34BD5800412A45 /* ActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F90CA1B34BD5800412A45 /* ActionButtonItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +38,8 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		A90AD8E91B13CA4700DE2695 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		A9E513A71B13CE0200604F6B /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
-		A9E513A81B13CE0200604F6B /* ActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtonItem.swift; sourceTree = "<group>"; };
+		A91F90C91B34BD5800412A45 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		A91F90CA1B34BD5800412A45 /* ActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtonItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				A9E513A61B13CE0200604F6B /* Source */,
+				A91F90C81B34BD5800412A45 /* Source */,
 				607FACD21AFB9204008FA782 /* Example for ActionButton */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
@@ -118,13 +118,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A9E513A61B13CE0200604F6B /* Source */ = {
+		A91F90C81B34BD5800412A45 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A9E513A71B13CE0200604F6B /* ActionButton.swift */,
-				A9E513A81B13CE0200604F6B /* ActionButtonItem.swift */,
+				A91F90C91B34BD5800412A45 /* ActionButton.swift */,
+				A91F90CA1B34BD5800412A45 /* ActionButtonItem.swift */,
 			);
-			path = Source;
+			name = Source;
+			path = ../Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,8 +230,8 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				A9E513AA1B13CE0200604F6B /* ActionButtonItem.swift in Sources */,
-				A9E513A91B13CE0200604F6B /* ActionButton.swift in Sources */,
+				A91F90CC1B34BD5800412A45 /* ActionButtonItem.swift in Sources */,
+				A91F90CB1B34BD5800412A45 /* ActionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
