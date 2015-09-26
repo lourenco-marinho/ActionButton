@@ -74,7 +74,7 @@ public class ActionButtonItem: NSObject {
         self.view.userInteractionEnabled = true
         self.view.backgroundColor = UIColor.clearColor()
         
-        self.button = UIButton.buttonWithType(.Custom) as! UIButton
+        self.button = UIButton(type: .Custom)
         self.button.frame = CGRect(origin: CGPoint(x: self.viewSize.width - self.buttonSize.width, y: 0), size: buttonSize)
         self.button.layer.shadowOpacity = 1
         self.button.layer.shadowRadius = 2
