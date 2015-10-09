@@ -29,14 +29,18 @@ public typealias ActionButtonAction = (ActionButton) -> Void
 public class ActionButton: NSObject {
     
     /// The action the button should perform when tapped
-    public var action: ActionButtonAction?
+    private var action: ActionButtonAction?
 
-    /// The button's background color
-    public var backgroundColor: UIColor? {
+    /// The button's background color : set default color and selected color
+    public var backgroundColor: UIColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0) {
         willSet {
             floatButton.backgroundColor = newValue
+            backgroundColorSelected = newValue
         }
     }
+    
+    /// The button's background color : set default color
+    public var backgroundColorSelected: UIColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
     
     /// Indicates if the buttons is active (showing its items)
     private(set) public var active: Bool = false
@@ -62,6 +66,11 @@ public class ActionButton: NSObject {
     /// the float button's radius
     private let floatButtonRadius = 50
     
+    
+    public func setAction(action : ActionButtonAction) -> ActionButton{
+        self.action = action
+        return self
+    }
     public init(attachedToView view: UIView, items: [ActionButtonItem]?) {
         super.init()
         
@@ -76,9 +85,10 @@ public class ActionButton: NSObject {
         self.floatButton.layer.shadowOffset = CGSize(width: 1, height: 1)
         self.floatButton.layer.shadowColor = UIColor.grayColor().CGColor
         self.floatButton.setTitle("+", forState: .Normal)
-        self.floatButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
-        self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
+        self.floatButton.setImage(nil, forState: .Normal)
+        self.floatButton.backgroundColor = self.backgroundColor
         self.floatButton.titleLabel!.font = UIFont(name: "HelveticaNeue-Light", size: 35)
+        self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
         self.floatButton.userInteractionEnabled = true
         self.floatButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -95,6 +105,22 @@ public class ActionButton: NSObject {
         self.contentView.addGestureRecognizer(tap)
         
         self.installConstraints()
+    }
+    
+    public func setTitle(title: String?, forState state: UIControlState) -> ActionButton {
+        if let newTitle = title {
+            self.floatButton.setTitle(newTitle, forState: state)
+            self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+        return self
+    }
+    
+    public func setImage(image: UIImage?, forState state: UIControlState) -> ActionButton {
+        if let newImage = image{
+            self.floatButton.setImage(newImage, forState: state)
+            self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+        return self
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -171,13 +197,18 @@ public class ActionButton: NSObject {
         self.showBlur()
         
         self.active = !self.active
+        self.floatButton.backgroundColor = self.active ? backgroundColorSelected : backgroundColor
+        self.floatButton.selected = self.active
     }
     
     private func animateMenu() {
         let rotation = self.active ? 0 : CGFloat(M_PI_4)
         
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.AllowAnimatedContent, animations: {
-            self.floatButton.transform = CGAffineTransformMakeRotation(rotation)
+            
+            if self.floatButton.currentTitle == "+" && self.floatButton.imageView?.image == nil {
+                self.floatButton.transform = CGAffineTransformMakeRotation(rotation)
+            }
     
             if self.active == false {
                 self.contentView.alpha = 1.0
@@ -218,7 +249,7 @@ public class ActionButton: NSObject {
     /**
         Animates the button pressing, by the default this method just scales the button down when it's pressed and returns to its normal size when the button is no longer pressed
     
-        :param: scale how much the button should be scaled
+        - parameter scale: how much the button should be scaled
     */
     private func animatePressingWithScale(scale: CGFloat) {
         UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.AllowAnimatedContent, animations: {

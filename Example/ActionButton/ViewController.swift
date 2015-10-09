@@ -35,13 +35,21 @@ class ViewController: UIViewController {
         let plusImage = UIImage(named: "googleplus_icon.png")!
         
         let twitter = ActionButtonItem(title: "Twitter", image: twitterImage)
-        twitter.action = { item in println("Twitter...") }
+        twitter.action = {
+            item in print("Twitter...")
+        }
         
         let google = ActionButtonItem(title: "Google Plus", image: plusImage)
-        google.action = { item in println("Google Plus...") }
+        google.action = { item in print("Google Plus...") }
         
         actionButton = ActionButton(attachedToView: self.view, items: [twitter, google])
-        actionButton.action = { button in button.toggleMenu() }
+        actionButton.setAction({ button in button.toggleMenu() })
+            .setImage(twitterImage, forState: .Normal)
+            .setImage(plusImage, forState: .Selected)
+        
+        actionButton.backgroundColor = UIColor.greenColor()
+        actionButton.backgroundColorSelected = UIColor.redColor()
     }
+    
 }
 
