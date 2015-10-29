@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ActionButton"
-  s.version          = "0.1.2"
+  s.version          = "0.1.3"
   s.summary          = "Action button is a Floating Action Button inspired from Google Inbox implemented in Swift"
   s.homepage         = "https://github.com/lourenco-marinho/ActionButton"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"

@@ -29,7 +29,7 @@ public typealias ActionButtonAction = (ActionButton) -> Void
 public class ActionButton: NSObject {
     
     /// The action the button should perform when tapped
-    private var action: ActionButtonAction?
+    public var action: ActionButtonAction?
 
     /// The button's background color : set default color and selected color
     public var backgroundColor: UIColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0) {
@@ -76,11 +76,6 @@ public class ActionButton: NSObject {
     /// the float button's radius
     private let floatButtonRadius = 50
     
-    
-    public func setAction(action : ActionButtonAction) -> ActionButton{
-        self.action = action
-        return self
-    }
     public init(attachedToView view: UIView, items: [ActionButtonItem]?) {
         super.init()
         
@@ -117,24 +112,22 @@ public class ActionButton: NSObject {
         self.installConstraints()
     }
     
-    public func setTitle(title: String?, forState state: UIControlState) -> ActionButton {
-        if let newTitle = title {
-            self.floatButton.setTitle(newTitle, forState: state)
-            self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        }
-        return self
-    }
-    
-    public func setImage(image: UIImage?, forState state: UIControlState) -> ActionButton {
-        if let newImage = image{
-            self.floatButton.setImage(newImage, forState: state)
-            self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        }
-        return self
-    }
-    
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Set Methods
+    public func setTitle(title: String?, forState state: UIControlState) {
+        floatButton.setImage(nil, forState: state)
+        floatButton.setTitle(title, forState: state)
+        floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
+    }
+    
+    public func setImage(image: UIImage?, forState state: UIControlState) {
+        setTitle(nil, forState: state)
+        floatButton.setImage(image, forState: state)
+        floatButton.adjustsImageWhenHighlighted = false
+        floatButton.contentEdgeInsets = UIEdgeInsetsZero
     }
     
     //MARK: - Auto Layout Methods
@@ -216,7 +209,7 @@ public class ActionButton: NSObject {
         
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.AllowAnimatedContent, animations: {
             
-            if self.floatButton.currentTitle == "+" && self.floatButton.imageView?.image == nil {
+            if self.floatButton.imageView?.image == nil {
                 self.floatButton.transform = CGAffineTransformMakeRotation(rotation)
             }
     
