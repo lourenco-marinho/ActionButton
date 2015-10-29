@@ -46,7 +46,17 @@ public class ActionButton: NSObject {
     private(set) public var active: Bool = false
     
     /// An array of items that the button will present
-    internal var items: [ActionButtonItem]?
+    internal var items: [ActionButtonItem]? {
+        willSet {
+            for abi in self.items! {
+                abi.view.removeFromSuperview()
+            }
+        }
+        didSet {
+            placeButtonItems()
+            showActive(true)
+        }
+    }
     
     /// The button that will be presented to the user
     private var floatButton: UIButton!
@@ -210,34 +220,38 @@ public class ActionButton: NSObject {
                 self.floatButton.transform = CGAffineTransformMakeRotation(rotation)
             }
     
-            if self.active == false {
-                self.contentView.alpha = 1.0
-                
-                if let optionalItems = self.items {
-                    for (index, item) in optionalItems.enumerate() {
-                        let offset = index + 1
-                        let translation = self.itemOffset * offset
-                        item.view.transform = CGAffineTransformMakeTranslation(0, CGFloat(translation))
-                        item.view.alpha = 1
-                    }
-                }
-            } else {
-                self.contentView.alpha = 0.0
-                
-                if let optionalItems = self.items {
-                    for item in optionalItems {
-                        item.view.transform = CGAffineTransformMakeTranslation(0, 0)
-                        item.view.alpha = 0
-                    }
-                }
-            }
+            self.showActive(false)
         }, completion: {completed in
             if self.active == false {
                 self.hideBlur()
             }
         })
     }
-        
+    
+    private func showActive(active: Bool) {
+        if self.active == active {
+            self.contentView.alpha = 1.0
+            
+            if let optionalItems = self.items {
+                for (index, item) in optionalItems.enumerate() {
+                    let offset = index + 1
+                    let translation = self.itemOffset * offset
+                    item.view.transform = CGAffineTransformMakeTranslation(0, CGFloat(translation))
+                    item.view.alpha = 1
+                }
+            }
+        } else {
+            self.contentView.alpha = 0.0
+            
+            if let optionalItems = self.items {
+                for item in optionalItems {
+                    item.view.transform = CGAffineTransformMakeTranslation(0, 0)
+                    item.view.alpha = 0
+                }
+            }
+        }
+    }
+    
     private func showBlur() {
         self.parentView.insertSubview(self.contentView, belowSubview: self.floatButton)
     }
