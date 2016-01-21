@@ -1,5 +1,7 @@
 ![Action Button](Action Button.png)
 
+[![Cocoapods Compatible](https://img.shields.io/cocoapods/v/ActionButton.svg)](https://img.shields.io/cocoapods/v/ActionButton.svg)
+
 Action button is a Floating Action Button inspired from Google Inbox implemented in Swift
 
 Import
