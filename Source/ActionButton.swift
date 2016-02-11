@@ -76,7 +76,7 @@ public class ActionButton: NSObject {
     /// the float button's radius
     private let floatButtonRadius = 50
     
-    public init(attachedToView view: UIView, items: [ActionButtonItem]?) {
+    public init(attachedToView view: UIView, items: [ActionButtonItem]?, tailingOffset: CGFloat = 15.0, bottomOffset: CGFloat = 15.0) {
         super.init()
         
         self.parentView = view
@@ -109,7 +109,7 @@ public class ActionButton: NSObject {
         let tap = UITapGestureRecognizer(target: self, action: Selector("backgroundTapped:"))
         self.contentView.addGestureRecognizer(tap)
         
-        self.installConstraints()
+        self.installConstraints(tailingOffset, bottomOffset: bottomOffset)
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -134,15 +134,15 @@ public class ActionButton: NSObject {
     /**
         Install all the necessary constraints for the button. By the default the button will be placed at 15pts from the bottom and the 15pts from the right of its *parentView*
     */
-    private func installConstraints() {
+    private func installConstraints(tailingOffset: CGFloat = 15.0, bottomOffset: CGFloat = 15.0) {
         let views = ["floatButton":self.floatButton, "parentView":self.parentView]
         let width = NSLayoutConstraint.constraintsWithVisualFormat("H:[floatButton(\(floatButtonRadius))]", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
         let height = NSLayoutConstraint.constraintsWithVisualFormat("V:[floatButton(\(floatButtonRadius))]", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
         self.floatButton.addConstraints(width)
         self.floatButton.addConstraints(height)
         
-        let trailingSpacing = NSLayoutConstraint.constraintsWithVisualFormat("V:[floatButton]-15-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
-        let bottomSpacing = NSLayoutConstraint.constraintsWithVisualFormat("H:[floatButton]-15-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
+        let trailingSpacing = NSLayoutConstraint.constraintsWithVisualFormat("V:[floatButton]-\(tailingOffset)-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
+        let bottomSpacing = NSLayoutConstraint.constraintsWithVisualFormat("H:[floatButton]-\(bottomOffset)-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
         self.parentView.addConstraints(trailingSpacing)
         self.parentView.addConstraints(bottomSpacing)
     }
