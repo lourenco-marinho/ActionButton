@@ -263,4 +263,8 @@ public class ActionButton: NSObject {
             self.floatButton.transform = CGAffineTransformMakeScale(scale, scale)
         }, completion: nil)
     }
+
+    public func destroy() {
+        self.floatButton.removeFromSuperview()
+    }
 }
