@@ -162,11 +162,14 @@ public class ActionButton: NSObject {
         let height = NSLayoutConstraint.constraintsWithVisualFormat("V:[floatButton(\(floatButtonRadius))]", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
         self.floatButton.addConstraints(width)
         self.floatButton.addConstraints(height)
+        
+        let trailingSpacing = NSLayoutConstraint.constraints(withVisualFormat: "V:[floatButton]-15-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        let bottomSpacing = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton]-15-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        self.parentView.addConstraints(trailingSpacing)
+        self.parentView.addConstraints(bottomSpacing)
 
-        self.bottomSpacingConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[floatButton]-15-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
-        self.trailingSpacingConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[floatButton]-15-|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views)
-        self.parentView.addConstraints(trailingSpacingConstraints)
-        self.parentView.addConstraints(bottomSpacingConstraints)
+        self.trailingSpacingConstraints = trailingSpacing
+        self.bottomSpacingConstraints = bottomSpacing
     }
     
     //MARK: - Button Actions Methods
