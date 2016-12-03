@@ -39,6 +39,28 @@ open class ActionButton: NSObject {
         }
     }
     
+    public var bottomSpacing: CGFloat {
+        get {
+            return bottomSpacingConstraints.first!.constant
+        }
+        set {
+            bottomSpacingConstraints.first!.constant = newValue
+            self.parentView.updateConstraintsIfNeeded()
+            self.parentView.layoutIfNeeded()
+        }
+    }
+
+    public var trailingSpacing: CGFloat {
+        get {
+            return trailingSpacingConstraints.first!.constant
+        }
+        set {
+            trailingSpacingConstraints.first!.constant = newValue
+            self.parentView.updateConstraintsIfNeeded()
+            self.parentView.layoutIfNeeded()
+        }
+    }
+
     /// The button's background color : set default color
     open var backgroundColorSelected: UIColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
     
@@ -145,6 +167,9 @@ open class ActionButton: NSObject {
         let bottomSpacing = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton]-15-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
         self.parentView.addConstraints(trailingSpacing)
         self.parentView.addConstraints(bottomSpacing)
+
+        self.trailingSpacingConstraints = trailingSpacing
+        self.bottomSpacingConstraints = bottomSpacing
     }
     
     //MARK: - Button Actions Methods
@@ -262,5 +287,9 @@ open class ActionButton: NSObject {
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
             self.floatButton.transform = CGAffineTransform(scaleX: scale, y: scale)
         }, completion: nil)
+    }
+
+    public func destroy() {
+        self.floatButton.removeFromSuperview()
     }
 }
