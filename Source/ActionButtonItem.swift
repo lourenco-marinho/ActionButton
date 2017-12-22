@@ -63,10 +63,10 @@ open class ActionButtonItem: NSObject {
     fileprivate var image: UIImage!
     
     /// Size needed for the *view* property presente the item's content
-    fileprivate(set) var viewSize = CGSize(width: 200, height: 35)
+    fileprivate(set) public var viewSize = CGSize(width: 200, height: 35)
     
     /// Button's size by default the button is 35x35
-    fileprivate(set) var buttonSize = CGSize(width: 35, height: 35)
+    fileprivate(set) public var buttonSize = CGSize(width: 35, height: 35)
     
     fileprivate var labelBackground: UIView!
     /// The inset

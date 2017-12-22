@@ -58,7 +58,7 @@ open class ActionButton: NSObject {
         }
     }
     /// The blur effect style of the background when menu opens. Set it to nil to disable blur
-    var backgroundBlurStyle: UIBlurEffectStyle? = .extraLight
+    public var backgroundBlurStyle: UIBlurEffectStyle? = .extraLight
     var image: UIImage?
     
     /// The button that will be presented to the user
@@ -74,12 +74,12 @@ open class ActionButton: NSObject {
     fileprivate var blurVisualEffect: UIVisualEffectView!
     
     /// Distance between each item action
-    var itemSpacing: CGFloat = 20
+    public var itemSpacing: CGFloat = 20
     
     /// The button offset from the bottom
-    fileprivate(set) var buttonOffset: CGPoint = CGPoint(x: 15, y: 15)
+    fileprivate(set) public var buttonOffset: CGPoint = CGPoint(x: 15, y: 15)
     /// the float button's size
-    fileprivate(set) var floatButtonDiameter: CGFloat = 50
+    fileprivate(set) public var floatButtonDiameter: CGFloat = 50
     
     public init(attachedToView view: UIView, items: [ActionButtonItem]?, buttonSize: CGFloat = 50, buttonOffset: CGPoint = CGPoint(x: 15, y: 15)) {
         super.init()
