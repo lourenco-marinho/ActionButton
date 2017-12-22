@@ -57,6 +57,9 @@ open class ActionButton: NSObject {
             showActive(true)
         }
     }
+    /// The blur effect style of the background when menu opens. Set it to nil to disable blur
+    var backgroundBlurStyle: UIBlurEffectStyle? = .extraLight
+    var image: UIImage?
     
     /// The button that will be presented to the user
     fileprivate var floatButton: UIButton!
@@ -70,21 +73,24 @@ open class ActionButton: NSObject {
     /// Blur effect that will be presented when the button is active
     fileprivate var blurVisualEffect: UIVisualEffectView!
     
-    // Distance between each item action
-    fileprivate let itemOffset = -55
+    /// Distance between each item action
+    var itemSpacing: CGFloat = 20
     
-    /// the float button's radius
-    fileprivate let floatButtonRadius = 50
+    /// The button offset from the bottom
+    fileprivate(set) var buttonOffset: CGPoint = CGPoint(x: 15, y: 15)
+    /// the float button's size
+    fileprivate(set) var floatButtonDiameter: CGFloat = 50
     
-    public init(attachedToView view: UIView, items: [ActionButtonItem]?) {
+    public init(attachedToView view: UIView, items: [ActionButtonItem]?, buttonSize: CGFloat = 50, buttonOffset: CGPoint = CGPoint(x: 15, y: 15)) {
         super.init()
-        
+        self.buttonOffset = buttonOffset
+        self.floatButtonDiameter = buttonSize
         self.parentView = view
         self.items = items
         let bounds = self.parentView.bounds
         
         self.floatButton = UIButton(type: .custom)
-        self.floatButton.layer.cornerRadius = CGFloat(floatButtonRadius / 2)
+        self.floatButton.layer.cornerRadius = CGFloat(floatButtonDiameter / 2)
         self.floatButton.layer.shadowOpacity = 1
         self.floatButton.layer.shadowRadius = 2
         self.floatButton.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -97,6 +103,9 @@ open class ActionButton: NSObject {
         self.floatButton.isUserInteractionEnabled = true
         self.floatButton.translatesAutoresizingMaskIntoConstraints = false
         
+        floatButton.addTarget(self, action: #selector(dragEnter(_:)), for: .touchDragEnter)
+        floatButton.addTarget(self, action: #selector(dragExit(_:)), for: .touchDragExit)
+        floatButton.addTarget(self, action: #selector(touchUpOutside(_:)), for: .touchUpOutside)
         self.floatButton.addTarget(self, action: #selector(ActionButton.buttonTapped(_:)), for: .touchUpInside)
         self.floatButton.addTarget(self, action: #selector(ActionButton.buttonTouchDown(_:)), for: .touchDown)
         self.parentView.addSubview(self.floatButton)
@@ -104,6 +113,8 @@ open class ActionButton: NSObject {
         self.contentView = UIView(frame: bounds)
         self.blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
         self.blurVisualEffect.frame = self.contentView.frame
+        self.blurVisualEffect.effect = nil
+        self.contentView.backgroundColor = UIColor.clear
         self.contentView.addSubview(self.blurVisualEffect)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(ActionButton.backgroundTapped(_:)))
@@ -136,32 +147,41 @@ open class ActionButton: NSObject {
     */
     fileprivate func installConstraints() {
         let views: [String: UIView] = ["floatButton":self.floatButton, "parentView":self.parentView]
-        let width = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton(\(floatButtonRadius))]", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
-        let height = NSLayoutConstraint.constraints(withVisualFormat: "V:[floatButton(\(floatButtonRadius))]", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        let width = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton(\(floatButtonDiameter))]", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        let height = NSLayoutConstraint.constraints(withVisualFormat: "V:[floatButton(\(floatButtonDiameter))]", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
         self.floatButton.addConstraints(width)
         self.floatButton.addConstraints(height)
         
-        let trailingSpacing = NSLayoutConstraint.constraints(withVisualFormat: "V:[floatButton]-15-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
-        let bottomSpacing = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton]-15-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        let trailingSpacing = NSLayoutConstraint.constraints(withVisualFormat: "V:[floatButton]-\(buttonOffset.y)-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
+        let bottomSpacing = NSLayoutConstraint.constraints(withVisualFormat: "H:[floatButton]-\(buttonOffset.x)-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: views)
         self.parentView.addConstraints(trailingSpacing)
         self.parentView.addConstraints(bottomSpacing)
     }
     
     //MARK: - Button Actions Methods
-    func buttonTapped(_ sender: UIControl) {
+    @objc func buttonTapped(_ sender: UIControl) {
         animatePressingWithScale(1.0)
         
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
     }
+    @objc private func dragEnter(_ sender: Any) {
+        animatePressingWithScale(0.9)
+    }
+    @objc private func dragExit(_ sender: Any) {
+        animatePressingWithScale(1.0)
+    }
+    @objc private func touchUpOutside(_ sender: UIControl) {
+        animatePressingWithScale(1.0)
+    }
     
-    func buttonTouchDown(_ sender: UIButton) {
+    @objc func buttonTouchDown(_ sender: UIButton) {
         animatePressingWithScale(0.9)
     }
     
     //MARK: - Gesture Recognizer Methods
-    func backgroundTapped(_ gesture: UIGestureRecognizer) {
+    @objc func backgroundTapped(_ gesture: UIGestureRecognizer) {
         if self.active {
             self.toggle()
         }
@@ -183,7 +203,7 @@ open class ActionButton: NSObject {
     fileprivate func placeButtonItems() {
         if let optionalItems = self.items {
             for item in optionalItems {
-                item.view.center = CGPoint(x: self.floatButton.center.x - 83, y: self.floatButton.center.y)
+                item.view.center = CGPoint(x: self.floatButton.center.x - (item.viewSize.width/2 - item.buttonSize.width/2), y: self.floatButton.center.y)
                 item.view.removeFromSuperview()
                 
                 self.contentView.addSubview(item.view)
@@ -205,7 +225,7 @@ open class ActionButton: NSObject {
     }
     
     fileprivate func animateMenu() {
-        let rotation = self.active ? 0 : CGFloat(M_PI_4)
+        let rotation = self.active ? 0 : CGFloat(Double.pi/4)
         
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
             
@@ -223,19 +243,21 @@ open class ActionButton: NSObject {
     
     fileprivate func showActive(_ active: Bool) {
         if self.active == active {
-            self.contentView.alpha = 1.0
-            
+//            self.contentView.alpha = 1.0
+            if let style = self.backgroundBlurStyle {
+                self.blurVisualEffect.effect = UIBlurEffect(style: style)
+            }
             if let optionalItems = self.items {
                 for (index, item) in optionalItems.enumerated() {
                     let offset = index + 1
-                    let translation = self.itemOffset * offset
-                    item.view.transform = CGAffineTransform(translationX: 0, y: CGFloat(translation))
+                    let translation = -1 * (itemSpacing + item.buttonSize.height) * CGFloat(offset)
+                    item.view.transform = CGAffineTransform(translationX: 0, y: translation)
                     item.view.alpha = 1
                 }
             }
         } else {
-            self.contentView.alpha = 0.0
-            
+//            self.contentView.alpha = 0.0
+            self.blurVisualEffect.effect = nil
             if let optionalItems = self.items {
                 for item in optionalItems {
                     item.view.transform = CGAffineTransform(translationX: 0, y: 0)

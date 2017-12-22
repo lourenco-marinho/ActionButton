@@ -31,7 +31,7 @@ open class ActionButtonItem: NSObject {
     /// The action the item should perform when tapped
     open var action: ActionButtonItemAction?
     
-    /// Description of the item's action
+    /// Description of the item's action. This should not be changed if the text length changes as it does not trigger a resize of the item view
     open var text: String {
         get {
             return self.label.text!
@@ -39,6 +39,15 @@ open class ActionButtonItem: NSObject {
         
         set {
             self.label.text = newValue
+        }
+    }
+    /// The color of the item text
+    open var textColor: UIColor {
+        get {
+            return label.textColor
+        }
+        set {
+            label.textColor = newValue
         }
     }
     /// View that will hold the item's button and label
@@ -54,21 +63,24 @@ open class ActionButtonItem: NSObject {
     fileprivate var image: UIImage!
     
     /// Size needed for the *view* property presente the item's content
-    fileprivate let viewSize = CGSize(width: 200, height: 35)
+    fileprivate(set) var viewSize = CGSize(width: 200, height: 35)
     
     /// Button's size by default the button is 35x35
-    fileprivate let buttonSize = CGSize(width: 35, height: 35)
+    fileprivate(set) var buttonSize = CGSize(width: 35, height: 35)
     
     fileprivate var labelBackground: UIView!
-    fileprivate let backgroundInset = CGSize(width: 10, height: 10)
+    /// The inset
+    let backgroundInset = CGSize(width: 10, height: 10)
     
     /**
         :param: title Title that will be presented when the item is active
         :param: image Item's image used by the it's button
     */
-    public init(title optionalTitle: String?, image: UIImage?) {
+    public init(title optionalTitle: String?, image: UIImage?, buttonSize: CGSize = CGSize(width: 35, height: 35), viewSize: CGSize = CGSize(width: 200, height: 35), textFont: UIFont = UIFont.systemFont(ofSize: 14)) {
         super.init()
-        
+        self.buttonSize = buttonSize
+        self.viewSize = viewSize
+        self.viewSize.height = buttonSize.height
         self.view = UIView(frame: CGRect(origin: CGPoint.zero, size: self.viewSize))
         self.view.alpha = 0
         self.view.isUserInteractionEnabled = true
@@ -88,10 +100,11 @@ open class ActionButtonItem: NSObject {
                 
         if let text = optionalTitle , text.trimmingCharacters(in: CharacterSet.whitespaces).isEmpty == false {
             self.label = UILabel()
-            self.label.font = UIFont(name: "HelveticaNeue-Medium", size: 13)
+            self.label.font = textFont
             self.label.textColor = UIColor.darkGray
             self.label.textAlignment = .right
             self.label.text = text
+            self.label.numberOfLines = 0
             self.label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActionButtonItem.labelTapped(_:))))
             self.label.sizeToFit()
             
@@ -126,14 +139,14 @@ open class ActionButtonItem: NSObject {
     }
         
     //MARK: - Button Action Methods
-    func buttonPressed(_ sender: UIButton) {
+    @objc func buttonPressed(_ sender: UIButton) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
     }
     
     //MARK: - Gesture Recognizer Methods
-    func labelTapped(_ gesture: UIGestureRecognizer) {
+    @objc func labelTapped(_ gesture: UIGestureRecognizer) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
