@@ -83,7 +83,7 @@ open class ActionButtonItem: NSObject {
         self.button.addTarget(self, action: #selector(ActionButtonItem.buttonPressed(_:)), for: .touchUpInside)
 
         if let unwrappedImage = image {
-            self.button.setImage(unwrappedImage, for: UIControlState())
+            self.button.setImage(unwrappedImage, for: UIControl.State())
         }
                 
         if let text = optionalTitle , text.trimmingCharacters(in: CharacterSet.whitespaces).isEmpty == false {
@@ -126,14 +126,14 @@ open class ActionButtonItem: NSObject {
     }
         
     //MARK: - Button Action Methods
-    func buttonPressed(_ sender: UIButton) {
+    @objc func buttonPressed(_ sender: UIButton) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
     }
     
     //MARK: - Gesture Recognizer Methods
-    func labelTapped(_ gesture: UIGestureRecognizer) {
+    @objc func labelTapped(_ gesture: UIGestureRecognizer) {
         if let unwrappedAction = self.action {
             unwrappedAction(self)
         }
