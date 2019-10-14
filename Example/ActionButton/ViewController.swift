@@ -40,9 +40,9 @@ class ViewController: UIViewController {
         let google = ActionButtonItem(title: "Google Plus", image: plusImage)
         google.action = { item in print("Google Plus...") }
         
-        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google])
+        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google], trailingOffset: 20, bottomOffset: 50)
         actionButton.action = { button in button.toggleMenu() }
-        actionButton.setTitle("+", forState: UIControlState())
+        actionButton.setTitle("+", forState: UIControl.State())
         
         actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
     }
