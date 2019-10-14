@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         let google = ActionButtonItem(title: "Google Plus", image: plusImage)
         google.action = { item in print("Google Plus...") }
         
-        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google])
+        actionButton = ActionButton(attachedToView: self.view, items: [twitter, google], trailingOffset: 20, bottomOffset: 50)
         actionButton.action = { button in button.toggleMenu() }
         actionButton.setTitle("+", forState: UIControl.State())
         
