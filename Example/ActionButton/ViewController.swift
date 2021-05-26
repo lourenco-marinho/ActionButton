@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         
         actionButton = ActionButton(attachedToView: self.view, items: [twitter, google])
         actionButton.action = { button in button.toggleMenu() }
-        actionButton.setTitle("+", forState: UIControlState())
+        actionButton.setTitle("+", forState: UIControl.State())
         
         actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
     }
